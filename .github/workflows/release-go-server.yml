@@ -31,6 +31,9 @@ jobs:
           cd go-server
           go mod tidy
 
+      - name: Show go-server folder structure
+        run: ls -lR go-server
+
       - name: Archive and release
         run: zip -r go-server.zip go-server
 
