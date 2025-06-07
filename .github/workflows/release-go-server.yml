@@ -1,0 +1,35 @@
+name: Release Go Server
+
+on:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  go-server-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install oapi-codegen
+        run: |
+          go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: Generate Go server
+        run: bash tools/generate-go-server.sh
+
+      - name: Tidy module
+        run: cd go-server && go mod tidy
+
+      - name: Archive and release
+        run: zip -r go-server.zip go-server
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: go-server.zip
