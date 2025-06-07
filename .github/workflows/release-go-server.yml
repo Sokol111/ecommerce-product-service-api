@@ -23,8 +23,13 @@ jobs:
       - name: Generate Go server
         run: bash tools/generate-go-server.sh
 
+      - name: Show first 3 lines of go.mod
+        run: head -n 3 go-server/go.mod
+
       - name: Tidy module
-        run: cd go-server && go mod tidy
+        run: |
+          cd go-server
+          go mod tidy
 
       - name: Archive and release
         run: zip -r go-server.zip go-server
