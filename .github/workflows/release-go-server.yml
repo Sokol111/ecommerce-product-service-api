@@ -26,7 +26,10 @@ jobs:
       - name: Generate Go server
         run: bash tools/generate-go-server.sh
 
-      - name: Tidy module
+      - name: Tidy root module
+        run: go mod tidy
+
+      - name: Tidy go-server module
         run: |
           cd go-server
           go mod tidy
