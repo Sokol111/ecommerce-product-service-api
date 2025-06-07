@@ -1,13 +1,19 @@
 #!/bin/bash
-rm -rf go-server
-mkdir -p go-server
 
-cd go-server || exit 1
-go mod init github.com/Sokol111/ecommerce-product-service-api/go-server
-cd ..
+rm -rf server go-client
+mkdir -p server go-client
 
-oapi-codegen -generate gin-server,types,strict-server -package api \
-  -o go-server/server.gen.go openapi/openapi.yml
+oapi-codegen -generate types \
+  -package model \
+  -o internal/api/model/types.gen.go \
+  openapi/openapi.yml
 
-cd go-server || exit 1
-go mod tidy
+oapi-codegen -generate gin-server,strict-server \
+  -package server \
+  -o server/server.gen.go \
+  openapi/openapi.yml
+
+oapi-codegen -generate client \
+  -package client \
+  -o client/client.gen.go \
+  openapi/openapi.yml
