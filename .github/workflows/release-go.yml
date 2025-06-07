@@ -33,3 +33,14 @@ jobs:
 
       - name: Generate Go Code
         run: make all
+
+      - name: Create zip archive
+        run: |
+          zip -r generated-go.zip go-client go-server
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: generated-go.zip
