@@ -15,9 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Show full go.mod content
-        run: cat go-server/go.mod
-
       - name: Install oapi-codegen
         run: |
           go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
@@ -25,9 +22,6 @@ jobs:
 
       - name: Generate Go server
         run: bash tools/generate-go-server.sh
-
-      - name: Show first 3 lines of go.mod
-        run: head -n 3 go-server/go.mod
 
       - name: Tidy module
         run: |
