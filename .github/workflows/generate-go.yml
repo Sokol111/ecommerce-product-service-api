@@ -1,4 +1,4 @@
-name: Generate and Release Go SDK
+name: Generate Go SDK
 
 on:
   workflow_dispatch:
@@ -6,9 +6,6 @@ on:
       version:
         description: "Put the next version (e.g. v1.0.0)"
         required: true
-
-permissions:
-  contents: write
 
 jobs:
   generate-sdk:
