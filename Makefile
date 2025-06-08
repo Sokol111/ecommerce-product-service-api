@@ -1,6 +1,7 @@
 OAPI_GEN := $(HOME)/go/bin/oapi-codegen
 OPENAPI_FILE := openapi/openapi.yml
-GEN_DIR := gen
+GEN_PKG := api
+GEN_DIR := $(GEN_PKG)
 
 .PHONY: all client server types clean install-tools
 
@@ -12,17 +13,17 @@ install-tools:
 types:
 	@echo "Generating types (models)..."
 	mkdir -p $(GEN_DIR)
-	$(OAPI_GEN) -generate types -package gen -o $(GEN_DIR)/models.gen.go $(OPENAPI_FILE)
+	$(OAPI_GEN) -generate types -package $(GEN_PKG) -o $(GEN_DIR)/models.gen.go $(OPENAPI_FILE)
 
 server:
 	@echo "Generating Go server..."
 	mkdir -p $(GEN_DIR)
-	$(OAPI_GEN) -generate gin-server,strict-server -package gen -o $(GEN_DIR)/server.gen.go $(OPENAPI_FILE)
+	$(OAPI_GEN) -generate gin-server,strict-server -package $(GEN_PKG) -o $(GEN_DIR)/server.gen.go $(OPENAPI_FILE)
 
 client:
 	@echo "Generating Go client..."
 	mkdir -p $(GEN_DIR)
-	$(OAPI_GEN) -generate client -package gen -o $(GEN_DIR)/client.gen.go $(OPENAPI_FILE)
+	$(OAPI_GEN) -generate client -package $(GEN_PKG) -o $(GEN_DIR)/client.gen.go $(OPENAPI_FILE)
 
 clean:
 	rm -rf $(GEN_DIR)
