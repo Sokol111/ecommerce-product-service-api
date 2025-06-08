@@ -44,13 +44,3 @@ jobs:
         run: |
           git tag ${{ github.event.inputs.version }}
           git push origin ${{ github.event.inputs.version }}
-
-      - name: Create GitHub Release with generated code
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.event.inputs.version }}
-          name: Release ${{ github.event.inputs.version }}
-          files: |
-            gen/client.gen.go
-            gen/server.gen.go
-            gen/models.gen.go
