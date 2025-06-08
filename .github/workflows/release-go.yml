@@ -1,32 +1,31 @@
-name: Generate and Commit Go SDK
+name: Generate and Release Go SDK
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Semver version (e.g. v1.0.10)"
+        required: true
 
 permissions:
   contents: write
 
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
-  generate-and-commit:
+  generate-sdk:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # To allow tag creation
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: "1.24.2"
 
-      - name: Generate Go SDK using Makefile
+      - name: Generate Go SDK
         run: make all
 
       - name: Configure Git
@@ -34,18 +33,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit generated SDK to `generated` branch
+      - name: Commit to `generated` branch
         run: |
           git checkout -B generated
           git add gen/
-          git commit -m "chore: generate SDK for release ${{ github.ref_name }}" || echo "No changes to commit"
+          git commit -m "chore: generate SDK for release ${{ github.event.inputs.version }}" || echo "No changes to commit"
           git push origin generated --force
 
-      - name: Create GitHub Release with generated files
+      - name: Create tag on generated branch
+        run: |
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}
+
+      - name: Create GitHub Release with generated code
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.event.inputs.version }}
+          name: Release ${{ github.event.inputs.version }}
           files: |
             gen/client.gen.go
             gen/server.gen.go
