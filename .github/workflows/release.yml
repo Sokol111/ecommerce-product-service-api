@@ -41,13 +41,7 @@ jobs:
           npm install --global @openapitools/openapi-generator-cli
 
       - name: Generate JavaScript SDK
-        run: |
-          mkdir -p js-client
-          openapi-generator-cli generate \
-            -i openapi/openapi.yaml \
-            -g javascript \
-            -o js-client \
-            --additional-properties=projectName=my-api-client
+        run: make js
 
       - name: Configure Git
         run: |
