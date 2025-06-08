@@ -1,4 +1,4 @@
-name: Generate Go SDK
+name: Generate and Release Go SDK
 
 on:
   workflow_dispatch:
@@ -6,6 +6,9 @@ on:
       version:
         description: "Put the next version (e.g. v1.0.0)"
         required: true
+
+permissions:
+  contents: write
 
 jobs:
   generate-sdk:
@@ -41,3 +44,9 @@ jobs:
         run: |
           git tag ${{ github.event.inputs.version }}
           git push origin ${{ github.event.inputs.version }}
+
+      - name: Create GitHub Release with generated code
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: Release ${{ github.event.inputs.version }}
