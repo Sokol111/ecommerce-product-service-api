@@ -1,4 +1,4 @@
-name: Generate and Release Go SDK
+name: Generate and Release
 
 on:
   workflow_dispatch:
@@ -31,6 +31,24 @@ jobs:
       - name: Generate Go SDK
         run: make types server client
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install OpenAPI Generator CLI
+        run: |
+          npm install --global @openapitools/openapi-generator-cli
+
+      - name: Generate JavaScript SDK
+        run: |
+          mkdir -p js-client
+          openapi-generator-cli generate \
+            -i openapi/openapi.yaml \
+            -g javascript \
+            -o js-client \
+            --additional-properties=projectName=my-api-client
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
@@ -39,7 +57,7 @@ jobs:
       - name: Commit to `generated` branch
         run: |
           git checkout -B generated
-          git add api/
+          git add api/ js-client/
           git commit -m "chore: generate SDK for release ${{ github.event.inputs.version }}" || echo "No changes to commit"
           git push origin generated --force
 
