@@ -1,9 +1,9 @@
 {
   "name": "@sokol111/ecommerce-product-service-api",
-  "version": "0.0.0",
   "description": "Generated TypeScript Axios client from OpenAPI",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
@@ -20,5 +20,8 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
