@@ -2,10 +2,6 @@ name: Generate and Release
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Put the next version (e.g. v1.0.0)"
-        required: true
 
 permissions:
   contents: write
@@ -19,6 +15,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # To allow tag creation
+
+      - name: Get version from OpenAPI
+        id: get_version
+        run: echo "version=$(yq e '.info.version' openapi/openapi.yml)" >> $GITHUB_OUTPUT
+
+      - name: Set version with v prefix
+        id: set_v_version
+        run: echo "version=v${{ steps.get_version.outputs.version }}" >> $GITHUB_OUTPUT
 
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -41,7 +45,7 @@ jobs:
           npm install --global @openapitools/openapi-generator-cli
 
       - name: Generate JavaScript SDK
-        run: make js VERSION=${{ github.event.inputs.version }}
+        run: make js VERSION=${{ steps.set_v_version.outputs.version }}
 
       - name: Publish JavaScript SDK to npm
         run: |
@@ -60,16 +64,16 @@ jobs:
         run: |
           git checkout -B generated
           git add api/ js-client/
-          git commit -m "chore: generate SDK for release ${{ github.event.inputs.version }}" || echo "No changes to commit"
+          git commit -m "chore: generate SDK for release ${{ steps.set_v_version.outputs.version }}" || echo "No changes to commit"
           git push origin generated --force
 
       - name: Create tag on generated branch
         run: |
-          git tag ${{ github.event.inputs.version }}
-          git push origin ${{ github.event.inputs.version }}
+          git tag ${{ steps.set_v_version.outputs.version }}
+          git push origin ${{ steps.set_v_version.outputs.version }}
 
       - name: Create GitHub Release with generated code
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          name: Release ${{ github.event.inputs.version }}
+          tag_name: ${{ steps.set_v_version.outputs.version }}
+          name: Release ${{ steps.set_v_version.outputs.version }}
