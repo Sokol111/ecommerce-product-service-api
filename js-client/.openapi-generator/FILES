@@ -1,0 +1,14 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/CreateProductRequest.md
+docs/DefaultApi.md
+docs/ErrorResponse.md
+docs/ProductResponse.md
+docs/UpdateProductRequest.md
+git_push.sh
+index.ts
