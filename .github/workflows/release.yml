@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  generate-sdk:
+  generate-and-release-sdk:
     runs-on: ubuntu-latest
 
     steps:
