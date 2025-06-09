@@ -41,7 +41,9 @@ js:
 	@echo "Copying package.json and tsconfig.json..."
 	cp template/package.json $(JS_CLIENT_DIR)/package.json
 	cp template/tsconfig.json $(JS_CLIENT_DIR)/tsconfig.json
-	node scripts/fix-package-json.js $(VERSION) $(JS_CLIENT_DIR)/package.json
+
+	@echo "Setting version..."
+	cd $(JS_CLIENT_DIR) && npm version $(shell echo $(VERSION) | sed 's/^v//') --no-git-tag-version
 
 	@echo "Installing dependencies..."
 	cd $(JS_CLIENT_DIR) && npm install
