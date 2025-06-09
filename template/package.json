@@ -1,0 +1,24 @@
+{
+  "name": "@sokol111/ecommerce-product-service-api",
+  "version": "0.0.0",
+  "description": "Generated TypeScript Axios client from OpenAPI",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": ["openapi", "typescript", "axios", "sdk"],
+  "author": "Sokol111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sokol111/ecommerce-product-service-api.git"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

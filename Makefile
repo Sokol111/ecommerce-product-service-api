@@ -4,6 +4,8 @@ GEN_PKG := api
 GEN_DIR := $(GEN_PKG)
 
 JS_CLIENT_DIR := js-client
+VERSION ?= 0.0.1
+CLEAN_VERSION := $(shell echo $(VERSION) | sed 's/^v//')
 
 .PHONY: all client server types clean install-tools js
 
@@ -33,9 +35,13 @@ js:
 	mkdir -p $(JS_CLIENT_DIR)
 	openapi-generator-cli generate \
 		-i $(OPENAPI_FILE) \
-		-g javascript \
+		-g typescript-axios \
 		-o $(JS_CLIENT_DIR) \
-		--additional-properties=usePromises=true,projectName=product-client,projectVersion=1.0.0
+		--additional-properties=useSingleRequestParameter=true
+
+	cp template/package.json $(JS_CLIENT_DIR)/package.json
+	cp template/tsconfig.json $(JS_CLIENT_DIR)/tsconfig.json
+	sed -i "s/\"version\": \".*\"/\"version\": \"$(CLEAN_VERSION)\"/" $(JS_CLIENT_DIR)/package.json
 
 clean:
 	rm -rf $(GEN_DIR)
