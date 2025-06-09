@@ -33,9 +33,9 @@ js:
 	mkdir -p $(JS_CLIENT_DIR)
 	openapi-generator-cli generate \
 		-i $(OPENAPI_FILE) \
-		-g typescript-axios \
+		-g javascript \
 		-o $(JS_CLIENT_DIR) \
-		--additional-properties=usePromises=true,projectName=product-client
+		--additional-properties=usePromises=true,projectName=product-client,projectVersion=1.0.0
 
 clean:
 	rm -rf $(GEN_DIR)
