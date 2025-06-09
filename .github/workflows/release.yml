@@ -59,7 +59,7 @@ jobs:
       - name: Commit to `generated` branch
         run: |
           git checkout -B generated
-          git add api/ js-client/
+          git add api/ js-client/ js-client/dist/
           git commit -m "chore: generate SDK for release ${{ github.event.inputs.version }}" || echo "No changes to commit"
           git push origin generated --force
 
