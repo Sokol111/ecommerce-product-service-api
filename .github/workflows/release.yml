@@ -43,12 +43,6 @@ jobs:
       - name: Generate JavaScript SDK
         run: make js
 
-      - name: Build JavaScript SDK
-        run: |
-          cd js-client
-          npm install
-          npm run build
-
       - name: Publish JavaScript SDK to npm
         run: |
           cd js-client

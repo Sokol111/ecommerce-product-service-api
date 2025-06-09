@@ -5,7 +5,6 @@ GEN_DIR := $(GEN_PKG)
 
 JS_CLIENT_DIR := js-client
 VERSION ?= 0.0.1
-CLEAN_VERSION := $(shell echo $(VERSION) | sed 's/^v//')
 
 .PHONY: all client server types clean install-tools js
 
@@ -39,9 +38,18 @@ js:
 		-o $(JS_CLIENT_DIR) \
 		--additional-properties=useSingleRequestParameter=true
 
+	@echo "Copying package.json and tsconfig.json..."
 	cp template/package.json $(JS_CLIENT_DIR)/package.json
 	cp template/tsconfig.json $(JS_CLIENT_DIR)/tsconfig.json
-	sed -i "s/\"version\": \".*\"/\"version\": \"$(CLEAN_VERSION)\"/" $(JS_CLIENT_DIR)/package.json
+	node scripts/fix-package-json.js $(VERSION) $(JS_CLIENT_DIR)/package.json
+
+	@echo "Installing dependencies..."
+	cd $(JS_CLIENT_DIR) && npm install
+
+	@echo "Building package..."
+	cd $(JS_CLIENT_DIR) && npm run build
+
+	@echo "JS client ready in $(JS_CLIENT_DIR)/dist"
 
 clean:
 	rm -rf $(GEN_DIR)

@@ -16,7 +16,7 @@
     "url": "https://github.com/Sokol111/ecommerce-product-service-api.git"
   },
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.1"
   },
   "devDependencies": {
     "typescript": "^5.4.0"
