@@ -1,79 +1,17 @@
-name: Generate and Release
+name: Generate and Release SDK
 
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  generate-and-release-sdk:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # To allow tag creation
-
-      - name: Get version from OpenAPI
-        id: get_version
-        run: echo "version=$(yq e '.info.version' openapi/openapi.yml)" >> $GITHUB_OUTPUT
-
-      - name: Set version with v prefix
-        id: set_v_version
-        run: echo "version=v${{ steps.get_version.outputs.version }}" >> $GITHUB_OUTPUT
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: "1.24.2"
-
-      - name: Install oapi-codegen
-        run: make install-tools
-
-      - name: Generate Go SDK
-        run: make types server client
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install OpenAPI Generator CLI
-        run: |
-          npm install --global @openapitools/openapi-generator-cli
-
-      - name: Generate JavaScript SDK
-        run: make js VERSION=${{ steps.set_v_version.outputs.version }}
-
-      - name: Publish JavaScript SDK to npm
-        run: |
-          cd js-client
-          npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
-          npm publish --access public
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit to `generated` branch
-        run: |
-          git checkout -B generated
-          git add api/
-          git commit -m "chore: generate SDK for release ${{ steps.set_v_version.outputs.version }}" || echo "No changes to commit"
-          git push origin generated --force
-
-      - name: Create tag on generated branch
-        run: |
-          git tag ${{ steps.set_v_version.outputs.version }}
-          git push origin ${{ steps.set_v_version.outputs.version }}
-
-      - name: Create GitHub Release with generated code
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ steps.set_v_version.outputs.version }}
-          name: Release ${{ steps.set_v_version.outputs.version }}
+  release:
+    uses: Sokol111/ecommerce-ci-templates/.github/workflows/reusable-sdk-release.yml@master
+    with:
+      go-version: "1.24.2"
+      node-version: "20"
+      openapi-file: "openapi/openapi.yml"
+      js-client-dir: "js-client"
+      gen-dir: "api"
+      template-dir: "template"
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

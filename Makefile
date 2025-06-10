@@ -1,9 +1,8 @@
 OAPI_GEN := $(HOME)/go/bin/oapi-codegen
-OPENAPI_FILE := openapi/openapi.yml
+OPENAPI_FILE ?= openapi/openapi.yml
 GEN_PKG := api
-GEN_DIR := $(GEN_PKG)
-
-JS_CLIENT_DIR := js-client
+GEN_DIR ?= $(GEN_PKG)
+JS_CLIENT_DIR ?= js-client
 VERSION ?= 0.0.1
 
 .PHONY: all client server types clean install-tools js
