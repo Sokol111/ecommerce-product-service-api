@@ -28,29 +28,29 @@ client:
 	$(OAPI_GEN) -generate client -package $(GEN_PKG) -o $(GEN_DIR)/client.gen.go $(OPENAPI_FILE)
 
 js-generate:
-    @echo "Generating JS client..."
-    mkdir -p $(JS_CLIENT_DIR)
-    openapi-generator-cli generate \
-        -i $(OPENAPI_FILE) \
-        -g typescript-axios \
-        -o $(JS_CLIENT_DIR) \
-        --additional-properties=useSingleRequestParameter=true
+	@echo "Generating JS client..."
+	mkdir -p $(JS_CLIENT_DIR)
+	openapi-generator-cli generate \
+		-i $(OPENAPI_FILE) \
+		-g typescript-axios \
+		-o $(JS_CLIENT_DIR) \
+		--additional-properties=useSingleRequestParameter=true
 
 js-config:
-    @echo "Copying package.json and tsconfig.json..."
-    cp $(TEMPLATE_DIR)/package.json $(JS_CLIENT_DIR)/package.json
-    cp $(TEMPLATE_DIR)/tsconfig.json $(JS_CLIENT_DIR)/tsconfig.json
+	@echo "Copying package.json and tsconfig.json..."
+	cp $(TEMPLATE_DIR)/package.json $(JS_CLIENT_DIR)/package.json
+	cp $(TEMPLATE_DIR)/tsconfig.json $(JS_CLIENT_DIR)/tsconfig.json
 
 js-version:
-    @echo "Setting version..."
-    cd $(JS_CLIENT_DIR) && npm version $(shell echo $(VERSION) | sed 's/^v//') --no-git-tag-version
+	@echo "Setting version..."
+	cd $(JS_CLIENT_DIR) && npm version $(shell echo $(VERSION) | sed 's/^v//') --no-git-tag-version
 
 js-build:
-    @echo "Installing dependencies..."
-    cd $(JS_CLIENT_DIR) && npm install
-    @echo "Building package..."
-    cd $(JS_CLIENT_DIR) && npm run build
-    @echo "JS client ready in $(JS_CLIENT_DIR)/dist"
+	@echo "Installing dependencies..."
+	cd $(JS_CLIENT_DIR) && npm install
+	@echo "Building package..."
+	cd $(JS_CLIENT_DIR) && npm run build
+	@echo "JS client ready in $(JS_CLIENT_DIR)/dist"
 
 js: js-generate js-config js-version js-build
 
