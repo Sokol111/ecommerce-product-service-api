@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   release:
-    uses: Sokol111/ecommerce-ci-templates/.github/workflows/reusable-sdk-release.yml@master
+    uses: Sokol111/ecommerce-infrastructure/.github/workflows/reusable-sdk-release.yml@master
     with:
       openapi-file: "openapi/openapi.yml"
       js-client-dir: "js-client"
