@@ -3,6 +3,9 @@ name: Release
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   release:
     uses: Sokol111/ecommerce-infrastructure/.github/workflows/generate-and-release-go-js-api.yml@master
