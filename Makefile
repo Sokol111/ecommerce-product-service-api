@@ -1,25 +1,23 @@
--include generate-api.mk
+-include generate-go-api.mk
+-include generate-js-api.mk
 
 .PHONY: update-makefiles
 
+OPENAPI_FILE ?= openapi/openapi.yml
+VERSION ?= 1.0.0
+
 update-makefiles:
 	@echo "Updating includes in Makefile..."
-	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-makefiles/master/generate-api.mk -o generate-api.mk
+	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-infrastructure/master/makefiles/generate-go-api.mk -o generate-go-api.mk
+	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-infrastructure/master/makefiles/generate-js-api.mk -o generate-js-api.mk
 	@echo "Done."
 
-generate-go-api: update-makefiles
+gen-go: update-makefiles
 	@echo "Generating Go API..."
-	make -f generate-api.mk install-tools
-	make -f generate-api.mk types
-	make -f generate-api.mk server
-	make -f generate-api.mk client
+	make -f generate-go-api.mk generate-go-api
 	@echo "Go API generated successfully."
 
-generate-js-api: update-makefiles
+gen-js: update-makefiles
 	@echo "Generating JS API..."
-	make -f generate-api.mk install-tools
-	make -f generate-api.mk js-generate
-	make -f generate-api.mk js-package
-	make -f generate-api.mk js-tsconfig
-	make -f generate-api.mk js-build
+	make -f generate-go-api.mk generate-go-api
 	@echo "JS API generated successfully."
