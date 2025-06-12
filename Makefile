@@ -5,6 +5,13 @@
 
 OPENAPI_FILE ?= openapi/openapi.yml
 VERSION ?= 1.0.0
+GO_GEN_DIR ?= api
+PACKAGE ?= api
+JS_GEN_DIR ?= js-client
+NPM_PACKAGE_NAME ?= @sokol111/ecommerce-product-service-api
+PROJECT_NAME ?= ecommerce-product-service-api
+AUTHOR ?= Sokol111
+REPOSITORY_URL ?= https://github.com/Sokol111/ecommerce-product-service-api.git
 
 update-makefiles:
 	@echo "Updating includes in Makefile..."

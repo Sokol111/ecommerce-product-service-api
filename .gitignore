@@ -1,4 +1,4 @@
-go-client/
-go-server/
+api/
+js-client/
 generate-go-api.mk
 generate-js-api.mk
