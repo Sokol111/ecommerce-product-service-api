@@ -8,6 +8,6 @@ permissions:
 
 jobs:
   release:
-    uses: Sokol111/ecommerce-infrastructure/.github/workflows/generate-and-release-go-js-api.yml@master
+    uses: Sokol111/ecommerce-infrastructure/.github/workflows/build-and-release-go-js-api.yml@master
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
