@@ -12,13 +12,13 @@ REPOSITORY_URL ?= https://github.com/Sokol111/ecommerce-product-service-api.git
 
 update-makefiles:
 	@echo "Updating includes in Makefile..."
-	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-infrastructure/master/makefiles/generate-go-api.mk -o generate-go-api.mk
-	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-infrastructure/master/makefiles/generate-js-api.mk -o generate-js-api.mk
+	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-infrastructure/master/makefiles/build-go-api.mk -o build-go-api.mk
+	curl -sSL https://raw.githubusercontent.com/Sokol111/ecommerce-infrastructure/master/makefiles/build-js-api.mk -o build-js-api.mk
 	@echo "Done."
 
 gen-go: update-makefiles
 	@echo "Generating Go API..."
-	make -f generate-go-api.mk generate-go-api \
+	make -f build-go-api.mk build-go-api \
 		OPENAPI_FILE=$(OPENAPI_FILE) \
 		GO_GEN_DIR=$(GO_GEN_DIR) \
 		PACKAGE=$(PACKAGE)
