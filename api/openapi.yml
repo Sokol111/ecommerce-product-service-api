@@ -1,0 +1,237 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  version: 1.0.39
+  description: API for managing products
+paths:
+  /product/create:
+    post:
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                draftId:
+                  type: string
+                  format: uuid
+                  pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  example: "123e4567-e89b-12d3-a456-426614174000"
+                name:
+                  type: string
+                  example: "Smartphone model X"
+                  minLength: 2
+                  maxLength: 100
+                price:
+                  type: number
+                  example: 10.50
+                  minimum: 0
+                  maximum: 100000000
+                quantity:
+                  type: integer
+                  example: 10
+                  minimum: 0
+                  maximum: 100000000
+                enabled:
+                  type: boolean
+                  example: true
+              required:
+                - name
+                - enabled
+                - price
+                - quantity
+      responses:
+        "200":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Standard internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /product/update:
+    put:
+      summary: Update an existing product
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "678b74a36fc2b2605c6f579d"
+                  minLength: 1
+                  maxLength: 100
+                name:
+                  type: string
+                  example: "Smartphone model X"
+                  minLength: 2
+                  maxLength: 100
+                price:
+                  type: number
+                  example: 10.50
+                  minimum: 0
+                  maximum: 100000000
+                quantity:
+                  type: integer
+                  example: 10
+                  minimum: 0
+                  maximum: 100000000
+                enabled:
+                  type: boolean
+                  example: true
+                version:
+                  type: integer
+                  example: 1
+                  minimum: 1
+              required:
+                - id
+                - name
+                - enabled
+                - price
+                - quantity
+                - version
+      responses:
+        "200":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "412":
+          description: Versions mismatch
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Standard internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /product/get/{id}:
+    get:
+      summary: Get a product by ID
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "404":
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Standard internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /product/list:
+    get:
+      summary: Get a list of all products
+      operationId: getAll
+      responses:
+        "200":
+          description: List of products retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductResponse"
+        "500":
+          description: Standard internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    ProductResponse:
+      type: object
+      required:
+        - id
+        - version
+        - name
+        - price
+        - quantity
+        - enabled
+        - createdAt
+        - modifiedAt
+      properties:
+        id:
+          type: string
+          example: "678b74a36fc2b2605c6f579d"
+        version:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Smartphone model X"
+        price:
+          type: number
+          example: 10.50
+        quantity:
+          type: integer
+          example: 10
+        enabled:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00Z"
+        modifiedAt:
+          type: string
+          format: date-time
+          example: "2023-01-02T00:00:00Z"
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "Product not found"
+        details:
+          type: string
+          example: "Optional additional information about the error"
