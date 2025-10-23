@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.43
+  version: 1.0.44
   description: API for managing products
 paths:
   /product/create:
@@ -15,7 +15,7 @@ paths:
             schema:
               type: object
               properties:
-                draftId:
+                id:
                   type: string
                   format: uuid
                   pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
@@ -58,15 +58,15 @@ paths:
         "400":
           description: Validation error
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
         "500":
-          description: Standard internal error
+          description: Internal Server Error
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
   /product/update:
     put:
       summary: Update an existing product
@@ -80,9 +80,9 @@ paths:
               properties:
                 id:
                   type: string
-                  example: "678b74a36fc2b2605c6f579d"
-                  minLength: 1
-                  maxLength: 100
+                  format: uuid
+                  pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  example: "123e4567-e89b-12d3-a456-426614174000"
                 name:
                   type: string
                   example: "Smartphone model X"
@@ -127,21 +127,21 @@ paths:
         "412":
           description: Versions mismatch
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Validation error
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
         "500":
-          description: Standard internal error
+          description: Internal Server Error
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
   /product/get/{id}:
     get:
       summary: Get a product by ID
@@ -162,15 +162,15 @@ paths:
         "404":
           description: Product not found
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
         "500":
-          description: Standard internal error
+          description: Internal Server Error
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
   /product/list:
     get:
       summary: Get a list of all products
@@ -185,11 +185,11 @@ paths:
                 items:
                   $ref: "#/components/schemas/ProductResponse"
         "500":
-          description: Standard internal error
+          description: Internal Server Error
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/Problem"
 components:
   schemas:
     ProductResponse:
@@ -230,18 +230,21 @@ components:
           type: string
           format: date-time
           example: "2023-01-02T00:00:00Z"
-    ErrorResponse:
+    Problem:
       type: object
-      required:
-        - code
-        - message
+      description: RFC7807 Problem Details
+      required: [title, status]
       properties:
-        code:
-          type: integer
-          example: 404
-        message:
-          type: string
-          example: "Product not found"
-        details:
-          type: string
-          example: "Optional additional information about the error"
+        type: { type: string, format: uri, default: "about:blank" }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string, format: uri }
+        traceId: { type: string }
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              message: { type: string }
