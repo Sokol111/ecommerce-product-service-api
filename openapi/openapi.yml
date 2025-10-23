@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.44
+  version: 1.0.45
   description: API for managing products
 paths:
   /product/create:
@@ -219,6 +219,8 @@ components:
         quantity:
           type: integer
           example: 10
+        imageId:
+          type: string
         enabled:
           type: boolean
           example: true
