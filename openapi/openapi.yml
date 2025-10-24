@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.45
+  version: 1.0.46
   description: API for managing products
 paths:
   /product/create:
@@ -235,9 +235,9 @@ components:
     Problem:
       type: object
       description: RFC7807 Problem Details
-      required: [title, status]
+      required: [type, title, status]
       properties:
-        type: { type: string, format: uri, default: "about:blank" }
+        type: { type: string, format: uri }
         title: { type: string }
         status: { type: integer }
         detail: { type: string }
