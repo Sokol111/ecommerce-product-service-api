@@ -23,7 +23,7 @@
 asyncapi: 3.0.0
 info:
   title: Product Messaging API
-  version: 1.0.61
+  version: 1.0.62
   description: |
     AsyncAPI specification for Product service Kafka events.
     Events are serialized using Avro format and registered in Schema Registry.
