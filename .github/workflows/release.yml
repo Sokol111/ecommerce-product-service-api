@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'openapi/openapi.yml'
+      - "openapi/openapi.yml"
+      - "asyncapi/**"
+      - "avro/**"
 
 permissions:
   contents: write
@@ -14,3 +16,4 @@ jobs:
     uses: Sokol111/ecommerce-infrastructure/.github/workflows/build-and-release-go-js-api.yml@master
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      SCHEMA_REGISTRY_URL: ${{ secrets.SCHEMA_REGISTRY_URL }}
