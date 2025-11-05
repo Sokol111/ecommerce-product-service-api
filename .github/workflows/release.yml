@@ -16,4 +16,3 @@ jobs:
     uses: Sokol111/ecommerce-infrastructure/.github/workflows/build-and-release-go-js-api.yml@master
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      SCHEMA_REGISTRY_URL: ${{ secrets.SCHEMA_REGISTRY_URL }}
