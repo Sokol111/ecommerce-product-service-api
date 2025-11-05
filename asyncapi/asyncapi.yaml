@@ -23,7 +23,7 @@
 asyncapi: 3.0.0
 info:
   title: Product Messaging API
-  version: 1.0.54
+  version: 1.0.55
   description: |
     AsyncAPI specification for Product service Kafka events.
     Events are serialized using Avro format and registered in Schema Registry.
@@ -77,7 +77,7 @@ operations:
     channel:
       $ref: "#/channels/catalog.product.events"
     messages:
-      - $ref: "#/components/messages/ProductCreated"
+      - $ref: "#/channels/catalog.product.events/messages/ProductCreated"
     description: Published when a new product is created
 
   publishProductUpdated:
@@ -85,7 +85,7 @@ operations:
     channel:
       $ref: "#/channels/catalog.product.events"
     messages:
-      - $ref: "#/components/messages/ProductUpdated"
+      - $ref: "#/channels/catalog.product.events/messages/ProductUpdated"
     description: Published when a product is updated
 
   subscribeProductEvents:
@@ -93,8 +93,8 @@ operations:
     channel:
       $ref: "#/channels/catalog.product.events"
     messages:
-      - $ref: "#/components/messages/ProductCreated"
-      - $ref: "#/components/messages/ProductUpdated"
+      - $ref: "#/channels/catalog.product.events/messages/ProductCreated"
+      - $ref: "#/channels/catalog.product.events/messages/ProductUpdated"
     description: |
       Subscribe to all product events.
       Events are ordered by product_id (partition key).
