@@ -1,0 +1,322 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  version: 1.0.70
+  description: API for managing products
+paths:
+  /product/create:
+    post:
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  example: "123e4567-e89b-12d3-a456-426614174000"
+                name:
+                  type: string
+                  example: "Smartphone model X"
+                  minLength: 2
+                  maxLength: 100
+                price:
+                  type: number
+                  example: 10.50
+                  minimum: 0
+                  maximum: 100000000
+                quantity:
+                  type: integer
+                  example: 10
+                  minimum: 0
+                  maximum: 100000000
+                imageId:
+                  type: string
+                  example: "678b74a36fc2b2605c6f579d"
+                  minLength: 1
+                  maxLength: 100
+                enabled:
+                  type: boolean
+                  example: true
+              required:
+                - name
+                - enabled
+                - price
+                - quantity
+      responses:
+        "200":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "400":
+          description: Validation error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /product/update:
+    put:
+      summary: Update an existing product
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  example: "123e4567-e89b-12d3-a456-426614174000"
+                name:
+                  type: string
+                  example: "Smartphone model X"
+                  minLength: 2
+                  maxLength: 100
+                price:
+                  type: number
+                  example: 10.50
+                  minimum: 0
+                  maximum: 100000000
+                quantity:
+                  type: integer
+                  example: 10
+                  minimum: 0
+                  maximum: 100000000
+                imageId:
+                  type: string
+                  example: "678b74a36fc2b2605c6f579d"
+                  minLength: 1
+                  maxLength: 100
+                enabled:
+                  type: boolean
+                  example: true
+                version:
+                  type: integer
+                  example: 1
+                  minimum: 1
+              required:
+                - id
+                - name
+                - enabled
+                - price
+                - quantity
+                - version
+      responses:
+        "200":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "412":
+          description: Versions mismatch
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Validation error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /product/get/{id}:
+    get:
+      summary: Get a product by ID
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        "404":
+          description: Product not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /product/list:
+    get:
+      summary: Get a paginated list of products with filtering and sorting
+      operationId: getList
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Page number (must be greater than 0)
+        - name: size
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 20
+          description: Number of items per page (max 100)
+        - name: enabled
+          in: query
+          required: false
+          schema:
+            type: boolean
+            example: true
+          description: Filter by enabled status
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [name, price, quantity, createdAt, modifiedAt]
+            example: createdAt
+          description: Field to sort by
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+            example: desc
+          description: Sort order (ascending or descending)
+      responses:
+        "200":
+          description: List of products retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductListResponse"
+        "400":
+          description: Validation error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+components:
+  schemas:
+    ProductListResponse:
+      type: object
+      required:
+        - items
+        - page
+        - size
+        - total
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductResponse"
+        page:
+          type: integer
+          example: 1
+          description: Current page number
+        size:
+          type: integer
+          example: 20
+          description: Number of items per page
+        total:
+          type: integer
+          example: 100
+          description: Total number of items
+    ProductResponse:
+      type: object
+      required:
+        - id
+        - version
+        - name
+        - price
+        - quantity
+        - enabled
+        - createdAt
+        - modifiedAt
+      properties:
+        id:
+          type: string
+          example: "678b74a36fc2b2605c6f579d"
+        version:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Smartphone model X"
+        price:
+          type: number
+          example: 10.50
+        quantity:
+          type: integer
+          example: 10
+        imageId:
+          type: string
+        enabled:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00Z"
+        modifiedAt:
+          type: string
+          format: date-time
+          example: "2023-01-02T00:00:00Z"
+    Problem:
+      type: object
+      description: RFC7807 Problem Details
+      required: [type, title, status]
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string, format: uri }
+        traceId: { type: string }
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              message: { type: string }
