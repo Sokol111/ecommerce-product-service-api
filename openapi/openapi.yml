@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.67
+  version: 1.0.68
   description: API for managing products
 paths:
   /product/create:
