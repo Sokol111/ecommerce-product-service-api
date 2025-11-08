@@ -28,11 +28,6 @@
       "doc": "Event creation timestamp in milliseconds since epoch"
     },
     {
-      "name": "schema_version",
-      "type": "int",
-      "doc": "Event schema version for compatibility tracking"
-    },
-    {
       "name": "trace_id",
       "type": ["null", "string"],
       "default": null,
