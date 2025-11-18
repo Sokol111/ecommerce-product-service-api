@@ -1,0 +1,110 @@
+# ============================================================================
+# Product Messaging API - AsyncAPI Specification
+# ============================================================================
+# 
+# 📌 SCHEMA-FIRST APPROACH:
+#    - Avro schemas (/avro/*.avsc) are the SOURCE OF TRUTH
+#    - This AsyncAPI file documents channels, operations, and event flows
+#    - Payload schemas reference Avro files (no duplication)
+#    - To modify event structure, edit Avro schemas only
+#
+# 🏗️ EVENT STRUCTURE (Metadata + Payload Pattern):
+#    Each event has two top-level fields:
+#    - metadata: EventMetadata (technical/observability fields)
+#    - payload: Business-specific data (e.g., ProductCreatedPayload)
+#    
+#    Benefits:
+#    - Clear separation of concerns (technical vs business data)
+#    - Reusable metadata across all events
+#    - All data in Avro (not in Kafka headers) for reliability
+#
+# ============================================================================
+
+asyncapi: 3.0.0
+info:
+  title: Product Messaging API
+  version: 1.0.83
+  description: |
+    AsyncAPI specification for Product service Kafka events.
+    Events are serialized using Avro format and registered in Schema Registry.
+    
+    📌 **Schema Source of Truth**: Avro schema files in /avro directory
+    This AsyncAPI document describes channels, operations, and event flows.
+    Detailed payload schemas are defined in Avro files for runtime serialization.
+    
+    🏗️ **Event Structure**:
+    All events follow the metadata + payload pattern:
+    ```
+    {
+      metadata: EventMetadata,  // Technical fields (event_id, trace_id, etc.)
+      payload: BusinessData      // Domain-specific data
+    }
+    ```
+    
+    This ensures clear separation between observability/routing data and business data.
+  contact:
+    name: Sokol111
+    url: https://github.com/Sokol111
+
+servers:
+  development:
+    host: localhost:9092
+    protocol: kafka
+    description: Local Kafka broker
+  production:
+    host: kafka:9092
+    protocol: kafka
+    description: Production Kafka broker
+
+defaultContentType: application/avro
+
+channels:
+  catalog.product.events:
+    address: catalog.product.events
+    description: |
+      Product domain events channel.
+      All product lifecycle events (created, updated, deleted) are published to this single topic.
+      Uses product_id as partition key to guarantee ordering for events of the same product.
+    messages:
+      ProductCreated:
+        $ref: "#/components/messages/ProductCreated"
+      ProductUpdated:
+        $ref: "#/components/messages/ProductUpdated"
+
+components:
+  messages:
+    ProductCreated:
+      name: ProductCreated
+      title: Product Created Event
+      summary: Event published when a new product is created
+      contentType: application/avro
+      description: |
+        **Schema Definition**: See /avro/product_created.avsc
+        
+        This event is emitted when a new product is successfully created in the system.
+        
+        **Structure**:
+        - `metadata` (EventMetadata): event_id, event_type, source, timestamp, trace_id, etc.
+        - `payload` (ProductCreatedPayload): product_id, name, price, quantity, enabled, etc.
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: '../avro/product_created.avsc'
+
+    ProductUpdated:
+      name: ProductUpdated
+      title: Product Updated Event
+      summary: Event published when a product is updated
+      contentType: application/avro
+      description: |
+        **Schema Definition**: See /avro/product_updated.avsc
+        
+        This event is emitted when a product's details are modified.
+        
+        **Structure**:
+        - `metadata` (EventMetadata): event_id, event_type, source, timestamp, trace_id, etc.
+        - `payload` (ProductUpdatedPayload): product_id, name, price, quantity, enabled, etc.
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: '../avro/product_updated.avsc'
