@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.88
+  version: 1.0.89
   description: API for managing products
 paths:
   /v1/product/create:
@@ -25,6 +25,10 @@ paths:
                   example: "Smartphone model X"
                   minLength: 2
                   maxLength: 100
+                description:
+                  type: string
+                  example: "High-quality smartphone with advanced features"
+                  maxLength: 2000
                 price:
                   type: number
                   example: 10.50
@@ -88,6 +92,10 @@ paths:
                   example: "Smartphone model X"
                   minLength: 2
                   maxLength: 100
+                description:
+                  type: string
+                  example: "High-quality smartphone with advanced features"
+                  maxLength: 2000
                 price:
                   type: number
                   example: 10.50
@@ -283,6 +291,9 @@ components:
         name:
           type: string
           example: "Smartphone model X"
+        description:
+          type: string
+          example: "High-quality smartphone with advanced features"
         price:
           type: number
           example: 10.50
