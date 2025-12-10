@@ -24,6 +24,16 @@ COLOR_RED := \033[31m
 include $(MAKEFILES_DIR)/openapi-go.mk
 
 # =============================================================================
+# Setup
+# =============================================================================
+
+.PHONY: setup
+setup: ## Setup local development (run once after clone)
+	@printf "$(COLOR_BLUE)→ Ignoring local changes to go.mod...$(COLOR_RESET)\n"
+	@git update-index --assume-unchanged go.mod
+	@printf "$(COLOR_GREEN)✓ Setup complete$(COLOR_RESET)\n"
+
+# =============================================================================
 # Help
 # =============================================================================
 
