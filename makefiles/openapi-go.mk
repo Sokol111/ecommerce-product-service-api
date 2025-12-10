@@ -1,7 +1,7 @@
 # ---- Variables (defaults, можна перевизначити в головному Makefile) ----
 OPENAPI_FILE ?= openapi/openapi.yml
-API_DIR ?= api
-PACKAGE ?= api
+API_DIR ?= gen/httpapi
+PACKAGE ?= httpapi
 
 # oapi-codegen binary
 OAPI_CODEGEN ?= $(shell which oapi-codegen 2>/dev/null || echo "$(HOME)/go/bin/oapi-codegen")

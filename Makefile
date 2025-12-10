@@ -22,6 +22,7 @@ COLOR_RED := \033[31m
 
 # ---- Include makefiles ----
 include $(MAKEFILES_DIR)/openapi-go.mk
+include $(MAKEFILES_DIR)/asyncapi-go.mk
 
 # =============================================================================
 # Setup
