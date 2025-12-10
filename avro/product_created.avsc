@@ -27,6 +27,12 @@
             "doc": "Product name"
           },
           {
+            "name": "description",
+            "type": ["null", "string"],
+            "default": null,
+            "doc": "Optional product description"
+          },
+          {
             "name": "price",
             "type": "float",
             "doc": "Product price"
