@@ -7,7 +7,9 @@ EVENTS_PACKAGE ?= events
 # Scripts
 EVENTS_SCRIPT := scripts/generate-events.sh
 
-##@ AsyncAPI/Events Generation
+# =============================================================================
+# AsyncAPI/Events Generation
+# =============================================================================
 
 .PHONY: events-generate
 events-generate: _events-check-tools ## Generate Go code from AsyncAPI/Avro schemas
