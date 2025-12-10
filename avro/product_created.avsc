@@ -49,6 +49,12 @@
             "doc": "Optional image identifier"
           },
           {
+            "name": "category_id",
+            "type": ["null", "string"],
+            "default": null,
+            "doc": "Optional category identifier (UUID)"
+          },
+          {
             "name": "enabled",
             "type": "boolean",
             "doc": "Whether the product is enabled"

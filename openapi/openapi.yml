@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.91
+  version: 1.0.92
   description: API for managing products
 paths:
   /v1/product/create:
@@ -44,6 +44,11 @@ paths:
                   example: "678b74a36fc2b2605c6f579d"
                   minLength: 1
                   maxLength: 100
+                categoryId:
+                  type: string
+                  format: uuid
+                  pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  example: "123e4567-e89b-12d3-a456-426614174000"
                 enabled:
                   type: boolean
                   example: true
@@ -111,6 +116,11 @@ paths:
                   example: "678b74a36fc2b2605c6f579d"
                   minLength: 1
                   maxLength: 100
+                categoryId:
+                  type: string
+                  format: uuid
+                  pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  example: "123e4567-e89b-12d3-a456-426614174000"
                 enabled:
                   type: boolean
                   example: true
@@ -302,6 +312,10 @@ components:
           example: 10
         imageId:
           type: string
+        categoryId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
         enabled:
           type: boolean
           example: true
