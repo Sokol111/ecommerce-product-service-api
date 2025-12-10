@@ -1,3 +1,7 @@
+# Generated code
 api/
 js-client/
 events/
+
+# Go module files (changes ignored after initial commit)
+go.sum
