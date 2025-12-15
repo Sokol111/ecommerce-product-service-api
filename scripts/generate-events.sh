@@ -285,9 +285,13 @@ EOF
             
             # Skip EventMetadata itself
             [ "$basename_noext" = "event_metadata" ] && continue
-             
-            # Only process event schemas
-            if [[ "$basename_noext" == *"_created" ]] || [[ "$basename_noext" == *"_updated" ]] || [[ "$basename_noext" == *"_event" ]]; then
+            
+            # Check if this is an event schema by looking at the schema name
+            local schema_name
+            schema_name=$(jq -r '.name' "$schema" 2>/dev/null || echo "")
+            
+            # Only process event schemas (schemas with names ending in "Event")
+            if [[ "$schema_name" == *"Event" ]]; then
                 local event_schema combined_schema varname
                 event_schema=$(cat "$schema")
                 

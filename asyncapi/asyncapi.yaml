@@ -1,24 +1,6 @@
 # ============================================================================
 # Product Messaging API - AsyncAPI Specification
 # ============================================================================
-# 
-# 📌 SCHEMA-FIRST APPROACH:
-#    - Avro schemas (/avro/*.avsc) are the SOURCE OF TRUTH
-#    - This AsyncAPI file documents channels, operations, and event flows
-#    - Payload schemas reference Avro files (no duplication)
-#    - To modify event structure, edit Avro schemas only
-#
-# 🏗️ EVENT STRUCTURE (Metadata + Payload Pattern):
-#    Each event has two top-level fields:
-#    - metadata: EventMetadata (technical/observability fields)
-#    - payload: Business-specific data (e.g., ProductCreatedPayload)
-#    
-#    Benefits:
-#    - Clear separation of concerns (technical vs business data)
-#    - Reusable metadata across all events
-#    - All data in Avro (not in Kafka headers) for reliability
-#
-# ============================================================================
 
 asyncapi: 3.0.0
 info:
@@ -27,11 +9,7 @@ info:
   description: |
     AsyncAPI specification for Product service Kafka events.
     Events are serialized using Avro format and registered in Schema Registry.
-    
-    📌 **Schema Source of Truth**: Avro schema files in /avro directory
-    This AsyncAPI document describes channels, operations, and event flows.
-    Detailed payload schemas are defined in Avro files for runtime serialization.
-    
+
     🏗️ **Event Structure**:
     All events follow the metadata + payload pattern:
     ```
@@ -39,9 +17,7 @@ info:
       metadata: EventMetadata,  // Technical fields (event_id, trace_id, etc.)
       payload: BusinessData      // Domain-specific data
     }
-    ```
-    
-    This ensures clear separation between observability/routing data and business data.
+    ```    
   contact:
     name: Sokol111
     url: https://github.com/Sokol111
