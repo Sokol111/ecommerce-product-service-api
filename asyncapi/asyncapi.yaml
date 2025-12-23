@@ -5,7 +5,7 @@
 asyncapi: 3.0.0
 info:
   title: Product Messaging API
-  version: 1.0.96
+  version: 1.0.97
   description: |
     AsyncAPI specification for Product service Kafka events.
     Events are serialized using Avro format and registered in Schema Registry.
@@ -58,6 +58,7 @@ components:
         **Schema Definition**: See /avro/product_created.avsc
         
         This event is emitted when a new product is successfully created in the system.
+        Generated event type: ProductCreatedEvent (metadata + payload envelope)
         
         **Structure**:
         - `metadata` (EventMetadata): event_id, event_type, source, timestamp, trace_id, etc.
@@ -65,7 +66,7 @@ components:
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
-          $ref: '../avro/product_created.avsc'
+          $ref: '../avro/product_created_payload.avsc'
 
     ProductUpdated:
       name: ProductUpdated
@@ -73,9 +74,10 @@ components:
       summary: Event published when a product is updated
       contentType: application/avro
       description: |
-        **Schema Definition**: See /avro/product_updated.avsc
+        **Schema Definition**: See /avro/product_updated_payload.avsc
         
         This event is emitted when a product's details are modified.
+        Generated event type: ProductUpdatedEvent (metadata + payload envelope)
         
         **Structure**:
         - `metadata` (EventMetadata): event_id, event_type, source, timestamp, trace_id, etc.
@@ -83,4 +85,4 @@ components:
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
-          $ref: '../avro/product_updated.avsc'
+          $ref: '../avro/product_updated_payload.avsc'
