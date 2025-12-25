@@ -67,6 +67,47 @@
         "logicalType": "timestamp-millis"
       },
       "doc": "Product last modification timestamp"
+    },
+    {
+      "name": "attributes",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": {
+            "type": "record",
+            "name": "ProductAttribute",
+            "doc": "Product attribute with value",
+            "fields": [
+              {
+                "name": "attribute_id",
+                "type": "string",
+                "doc": "Reference to the attribute definition (UUID)"
+              },
+              {
+                "name": "value",
+                "type": ["null", "string"],
+                "default": null,
+                "doc": "Single value (for single, boolean, text types)"
+              },
+              {
+                "name": "values",
+                "type": ["null", {"type": "array", "items": "string"}],
+                "default": null,
+                "doc": "Multiple values (for multiple type)"
+              },
+              {
+                "name": "numeric_value",
+                "type": ["null", "float"],
+                "default": null,
+                "doc": "Numeric value (for range type)"
+              }
+            ]
+          }
+        }
+      ],
+      "default": null,
+      "doc": "List of attribute values for this product"
     }
   ]
 }
