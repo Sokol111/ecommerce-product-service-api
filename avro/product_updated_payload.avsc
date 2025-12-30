@@ -85,6 +85,11 @@
                 "doc": "Reference to the attribute definition (UUID)"
               },
               {
+                "name": "slug",
+                "type": "string",
+                "doc": "URL-friendly identifier for filtering (denormalized from attribute definition)"
+              },
+              {
                 "name": "value",
                 "type": ["null", "string"],
                 "default": null,
