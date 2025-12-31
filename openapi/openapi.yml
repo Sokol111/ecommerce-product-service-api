@@ -363,22 +363,31 @@ components:
           pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
           example: "123e4567-e89b-12d3-a456-426614174000"
           description: Reference to the attribute definition
-        value:
+        optionSlug:
           type: string
-          example: "Red"
-          maxLength: 500
-          description: Single value (for single, boolean, text types)
-        values:
+          example: "red"
+          maxLength: 50
+          description: Slug of the selected option (for single type)
+        optionSlugs:
           type: array
-          description: Multiple values (for multiple type)
+          description: Slugs of selected options (for multiple type)
           items:
             type: string
-            maxLength: 500
-          example: ["WiFi", "Bluetooth", "NFC"]
+            maxLength: 50
+          example: ["wifi", "bluetooth", "nfc"]
         numericValue:
           type: number
           example: 128
           description: Numeric value (for range type attributes like RAM, storage, weight)
+        textValue:
+          type: string
+          example: "Custom engraving text"
+          maxLength: 2000
+          description: Free text value (for text type attributes)
+        booleanValue:
+          type: boolean
+          example: true
+          description: Boolean value (for boolean type attributes)
 
     ProductAttribute:
       type: object
@@ -390,20 +399,28 @@ components:
           type: string
           example: "123e4567-e89b-12d3-a456-426614174000"
           description: Reference to the attribute definition
-        value:
+        optionSlug:
           type: string
-          example: "Red"
-          description: Single value (for single, boolean, text types)
-        values:
+          example: "red"
+          description: Slug of the selected option (for single type)
+        optionSlugs:
           type: array
-          description: Multiple values (for multiple type)
+          description: Slugs of selected options (for multiple type)
           items:
             type: string
-          example: ["WiFi", "Bluetooth", "NFC"]
+          example: ["wifi", "bluetooth", "nfc"]
         numericValue:
           type: number
           example: 128
           description: Numeric value (for range type attributes like RAM, storage, weight)
+        textValue:
+          type: string
+          example: "Custom engraving text"
+          description: Free text value (for text type attributes)
+        booleanValue:
+          type: boolean
+          example: true
+          description: Boolean value (for boolean type attributes)
 
     Problem:
       type: object

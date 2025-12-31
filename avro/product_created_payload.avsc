@@ -90,22 +90,34 @@
                 "doc": "URL-friendly identifier for filtering (denormalized from attribute definition)"
               },
               {
-                "name": "value",
+                "name": "option_slug",
                 "type": ["null", "string"],
                 "default": null,
-                "doc": "Single value (for single, boolean, text types)"
+                "doc": "Slug of selected option (for single type)"
               },
               {
-                "name": "values",
+                "name": "option_slugs",
                 "type": ["null", {"type": "array", "items": "string"}],
                 "default": null,
-                "doc": "Multiple values (for multiple type)"
+                "doc": "Slugs of selected options (for multiple type)"
               },
               {
                 "name": "numeric_value",
                 "type": ["null", "float"],
                 "default": null,
                 "doc": "Numeric value (for range type)"
+              },
+              {
+                "name": "text_value",
+                "type": ["null", "string"],
+                "default": null,
+                "doc": "Free text value (for text type)"
+              },
+              {
+                "name": "boolean_value",
+                "type": ["null", "boolean"],
+                "default": null,
+                "doc": "Boolean value (for boolean type)"
               }
             ]
           }
